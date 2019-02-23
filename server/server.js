@@ -19,14 +19,22 @@ io.on('connection', (socket) => {
     });
 
     /* message events */
+    
+    /*
     socket.emit('newMessage',{
         from: 'raju',
         text: 'Hey this is raju.',
         createdAt:123
     });
+    */
 
     socket.on('createMessage',function(message){
         console.log(message);
+        io.emit('newMessage',{
+            from: message.from,
+            text: message.text,
+            createdAt: Date.now()
+        });
     });
 
 });
