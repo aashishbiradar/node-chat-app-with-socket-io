@@ -4,11 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script defer src="/socket.io/socket.io.js"></script>
+    <script defer src="/js/libs/jquery-3.3.1.min.js"></script>
+    <script defer src="/js/index.js"></script>
+    <link rel="stylesheet" href="/css/libs/bootstrap-4.1.3.min.css">
+    
     <title>Document</title>
 </head>
 <body>
-    <p>Welcome to chat app</p>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/index.js"></script>
+     <div class="container card">
+        <div class="card-header">
+            <h3>Welcome to chat app</h3>
+        </div>
+        <div>
+            <ol id="messages"></ol>
+        </div>
+        <div>
+            <form>
+                <div class="form-group">
+                    <input type="text" name="message" class="form-control">
+                </div>
+                <button class="js-send btn btn-primary">Send</button>
+            </form>
+        </div>
+     </div>
 </body>
 </html>
