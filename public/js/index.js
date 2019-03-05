@@ -16,11 +16,13 @@ socket.on('disconnect',function(){
 });
 
 socket.on('newMessage',function(message){
-    $('<li></li>').appendTo($('#messages')).text(message.from+': '+message.text);
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    $('<li></li>').appendTo($('#messages')).text(message.from+' '+formattedTime+': '+message.text);
 });
 
 socket.on('newLocationMessage',function(message){
-    var $li = $('<li></li>').appendTo('#messages').text(message.from+': ');
+    var formattedTime = moment(message.createdAt).format('h:mm a');
+    var $li = $('<li></li>').appendTo('#messages').text(message.from+' '+formattedTime+': ');
     var $a = $('<a target="_blank">My Current Location</a>').appendTo($li);
     $a.attr('href',message.url);
 });
