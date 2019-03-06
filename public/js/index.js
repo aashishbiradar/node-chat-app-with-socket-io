@@ -17,14 +17,24 @@ socket.on('disconnect',function(){
 
 socket.on('newMessage',function(message){
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    $('<li></li>').appendTo($('#messages')).text(message.from+' '+formattedTime+': '+message.text);
+    var template = $('#message-template').html();
+    var html = Mustache.render(template,{
+        from: message.from,
+        text: message.text,
+        createdAt: formattedTime
+    });
+    $('#messages').append(html);
 });
 
 socket.on('newLocationMessage',function(message){
     var formattedTime = moment(message.createdAt).format('h:mm a');
-    var $li = $('<li></li>').appendTo('#messages').text(message.from+' '+formattedTime+': ');
-    var $a = $('<a target="_blank">My Current Location</a>').appendTo($li);
-    $a.attr('href',message.url);
+    var template = $('#location-message-template').html();
+    var html = Mustache.render(template,{
+        from: message.from,
+        url: message.url,
+        createdAt: formattedTime
+    });
+    $('#messages').append(html);
 });
 
 $(document).ready(function(){
