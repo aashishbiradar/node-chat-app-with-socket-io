@@ -2,13 +2,6 @@ var socket = io();
 
 socket.on('connect',function(){
     console.log('Connected to server');
-
-    /*
-    socket.emit('createMessage',{
-        from:'mohan',
-        text:'hi this is mohan'
-    });
-    */
 });
 
 socket.on('disconnect',function(){
@@ -24,6 +17,7 @@ socket.on('newMessage',function(message){
         createdAt: formattedTime
     });
     $('#messages').append(html);
+    scrollToBottom();
 });
 
 socket.on('newLocationMessage',function(message){
@@ -35,7 +29,25 @@ socket.on('newLocationMessage',function(message){
         createdAt: formattedTime
     });
     $('#messages').append(html);
+    scrollToBottom();
 });
+
+function scrollToBottom()
+{
+    var $messages = $('#messages');
+    var $newMessage = $messages.children('li:last-child');
+
+    var clientHeight = $messages.prop('clientHeight');
+    var scrollTop = $messages.prop('scrollTop');
+    var scrollHeight = $messages.prop('scrollHeight');
+    var newMessageHeight = $newMessage.innerHeight();
+    var prevMessageHeight = $newMessage.prev().innerHeight();
+
+    if(clientHeight + scrollTop + newMessageHeight + prevMessageHeight >=  scrollHeight)
+    {
+        $messages.scrollTop(scrollHeight);
+    }
+}
 
 $(document).ready(function(){
 

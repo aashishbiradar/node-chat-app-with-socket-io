@@ -15,18 +15,9 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-    console.log('New user connected');
-    socket.on('disconnect',()=>{
+    socket.on('disconnect',() => {
         console.log('User was disconnected');
     });
-    
-    /*
-    socket.emit('newMessage',{
-        from: 'raju',
-        text: 'Hey this is raju.',
-        createdAt:123
-    });
-    */
     
     socket.emit('newMessage', generateMessage('Admin','Welcome to the chat app'));
 
@@ -35,21 +26,11 @@ io.on('connection', (socket) => {
     socket.on('createMessage',function(message,callback){
         io.emit('newMessage',generateMessage(message.from,message.text));
         typeof callback === 'function' && callback('from server');
-        
-        /*
-        socket.broadcast.emit('newMessage',{
-            from: message.from,
-            text: message.text,
-            createdAt: Date.now()
-        });
-        */
     });
 
     socket.on('createLocationMessage',(coords) => {
-        console.log(coords);
         io.emit('newLocationMessage',generateLocationMessage('Admin',coords.latitude,coords.longitude));
     });
-
 });
 
 
