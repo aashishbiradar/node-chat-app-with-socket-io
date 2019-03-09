@@ -1,7 +1,33 @@
+/***** helper functions  start *****/
+(function ($) {
+    $.deparam = $.deparam || function (uri) {
+        if (uri === undefined) {
+            uri = window.location.search;
+        }
+        var queryString = {};
+        uri.replace(
+            new RegExp(
+                "([^?=&]+)(=([^&#]*))?", "g"),
+            function ($0, $1, $2, $3) {
+                queryString[$1] = decodeURIComponent($3.replace(/\+/g, '%20'));
+            }
+        );
+        return queryString;
+    };
+})(jQuery);
+/***** helper functions  end *****/
 var socket = io();
 
 socket.on('connect',function(){
     console.log('Connected to server');
+    var params = $.deparam();
+    socket.emit('join',params,function(err){
+        if(err){
+            alert(err);
+            window.location.href = '/';
+        }
+        console.log('No error!');
+    });
 });
 
 socket.on('disconnect',function(){
@@ -30,6 +56,15 @@ socket.on('newLocationMessage',function(message){
     });
     $('#messages').append(html);
     scrollToBottom();
+});
+
+socket.on('updateUserList',function(users){
+    var $ol = $('<ol></ol>');
+    console.log(users);
+    users.forEach((user) => {
+        $ol.append($('<li></li>').text(user));
+    });
+    $('#users').html($ol);
 });
 
 function scrollToBottom()
