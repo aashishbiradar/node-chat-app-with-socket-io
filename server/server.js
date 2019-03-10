@@ -48,12 +48,20 @@ io.on('connection', (socket) => {
         socket.broadcast.to(params.room).emit('newMessage',generateMessage('Admin',`${params.name} joined`));
         
         socket.on('createMessage',function(message,callback){
-            io.to(params.room).emit('newMessage',generateMessage(message.from,message.text));
-            typeof callback === 'function' && callback('from server');
+            var user = users.getUser(socket.id);
+            if(user && isRealString(message.text))
+            {
+                io.to(user.room).emit('newMessage',generateMessage(user.name,message.text));
+                typeof callback === 'function' && callback('from server');
+            }
         });
     
         socket.on('createLocationMessage',(coords) => {
-            io.to(params.room).emit('newLocationMessage',generateLocationMessage('Admin',coords.latitude,coords.longitude));
+            var user = users.getUser(socket.id);
+            if(user)
+            {
+                io.to(user.room).emit('newLocationMessage',generateLocationMessage(user.name,coords.latitude,coords.longitude));
+            }
         });
     });
 });

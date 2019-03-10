@@ -95,12 +95,7 @@ $(document).ready(function(){
             return alert('Message cannot be empty');
         }
         $('input[name="message"]').val('');
-        socket.emit('createMessage',{
-            from: 'User',
-            text: msg
-        },function(){
-            console.log('Message sent!');
-        });
+        socket.emit('createMessage',{text: msg});
     });
 
     var $locationBtn =  $('#send-location');
@@ -115,10 +110,10 @@ $(document).ready(function(){
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
             });
-            $locationBtn.removeAttr('disabled').text('Sending location');
+            $locationBtn.removeAttr('disabled').text('Send location');
         },function(){
             alert('Unable to fetch location!');
-            $locationBtn.removeAttr('disabled').text('Sending location');
+            $locationBtn.removeAttr('disabled').text('Send location');
         });
     });
 });
